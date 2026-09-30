@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block content %}
+<form method="post" class="card {{ type }}">{% csrf_token %}<b>{% if doc %}Edit {{ doc.number }}{% else %}Baru: {{ label }}{% endif %}</b>
+{{ form.non_field_errors }}<div class="g">{% for f in form %}{% if f.name in 'date party phone' %}<div><label>{{ f.label }}</label>{{ f }}{{ f.errors }}</div>{% endif %}{% endfor %}</div>
+<label>{{ form.addr.label }}</label>{{ form.addr }}
+<label>Daftar {% if type == 'invoice' %}area pekerjaan{% else %}barang{% endif %}</label>{{ fs.management_form }}{{ fs.non_form_errors }}
+{% for f in fs %}<div class="it">{{ f.id }}{{ f.name }}<span class="q">{{ f.qty }}</span><span class="u">{{ f.unit }}</span><span class="pr">{{ f.price }}</span>
+<label style="margin:0">{{ f.DELETE }} hapus</label>{{ f.errors }}</div>{% endfor %}
+<label>{{ form.notes.label }}</label>{{ form.notes }}
+<p><button class="p">Simpan</button> <a class="btn" href="{% url 'list' type %}">Batal</a></p></form>{% endblock %}

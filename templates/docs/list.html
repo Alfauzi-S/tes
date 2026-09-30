@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% load rp %}{% block content %}
+<div class="tabs">{% for k, v in labels.items %}<a class="btn {% if k == type %}on{% endif %}" href="{% url 'list' k %}">{{ v }}</a>{% endfor %}</div>
+<div class="card"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><b>{{ label }}</b><a class="btn p" href="{% url 'new' type %}">+ Buat baru</a></div>
+<table><tr><th>Nomor</th><th>Tanggal</th><th>Nama</th><th class="n">Total</th><th></th></tr>
+{% for d in docs %}<tr><td>{{ d.number }}</td><td>{{ d.date|date:"d M Y" }}</td><td>{{ d.party }}</td><td class="n">{% if type != 'po' %}Rp {{ d.total|rp }}{% endif %}</td>
+<td class="n" style="white-space:nowrap"><a class="btn" href="{% url 'edit' d.pk %}">Edit</a> <a class="btn p" target="_blank" href="{% url 'cetak' d.pk %}">Cetak/PDF</a>
+<form class="inl" method="post" action="{% url 'hapus' d.pk %}" onsubmit="return confirm('Hapus {{ d.number }}?')">{% csrf_token %}<button class="d">Hapus</button></form></td></tr>
+{% empty %}<tr><td colspan="5">Belum ada data</td></tr>{% endfor %}</table></div>{% endblock %}

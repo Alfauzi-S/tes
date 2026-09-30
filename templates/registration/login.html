@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% load static %}{% block content %}
+<form method="post" class="login card">{% csrf_token %}
+<img src="{% static 'img/logo.png' %}" alt="" style="width:160px;display:block;margin:0 auto">
+{% if form.errors %}<p class="err">Username / password salah</p>{% endif %}
+<label>Username</label><input name="username" autocomplete="username" required autofocus>
+<label>Password</label><input name="password" type="password" autocomplete="current-password" required>
+<p><button class="p" style="width:100%">Masuk</button></p></form>{% endblock %}

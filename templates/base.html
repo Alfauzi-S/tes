@@ -1,0 +1,18 @@
+{% load static %}<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UD. Sinar Putra</title><style>
+:root{--c:#c2410c;--b:#e5e7eb}*{box-sizing:border-box}body{margin:0;font:15px system-ui,sans-serif;background:#f8f7f4;color:#1f2937}
+header{background:#fff;border-bottom:1px solid var(--b);padding:8px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}header img{height:44px}.sp{flex:1}
+main{max-width:960px;margin:0 auto;padding:16px}.tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.btn,button{font:inherit;padding:8px 14px;border:1px solid var(--b);background:#fff;border-radius:8px;cursor:pointer;text-decoration:none;color:inherit;display:inline-block}
+.on,.p{background:var(--c);border-color:var(--c);color:#fff}.d{color:#b91c1c}
+.card{background:#fff;border:1px solid var(--b);border-radius:12px;padding:14px;margin-bottom:12px;overflow-x:auto}
+input,textarea{font:inherit;width:100%;padding:8px;border:1px solid #d1d5db;border-radius:8px}label{display:block;font-size:13px;color:#6b7280;margin:8px 0 3px}
+table{width:100%;border-collapse:collapse}td,th{padding:8px 6px;border-bottom:1px solid var(--b);text-align:left}.n{text-align:right}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 12px}
+.it{display:grid;gap:6px;margin-bottom:6px;grid-template-columns:3fr 1fr 1fr 1.5fr auto;align-items:center}
+.po .it{grid-template-columns:3fr 1fr 1fr auto}.po .pr{display:none}.invoice .it{grid-template-columns:3fr 1.5fr auto}.invoice .q,.invoice .u{display:none}
+.err{color:#b91c1c}.login{max-width:340px;margin:12vh auto}.inl{display:inline}
+</style></head><body>
+{% if user.is_authenticated %}<header><img src="{% static 'img/logo.png' %}" alt=""><b>Manajemen Toko</b><span class="sp"></span>{{ user.username }}
+<form method="post" action="{% url 'logout' %}" class="inl">{% csrf_token %}<button>Keluar</button></form></header>{% endif %}
+<main>{% block content %}{% endblock %}</main></body></html>

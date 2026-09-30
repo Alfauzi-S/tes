@@ -1,0 +1,29 @@
+{% load static rp %}<!doctype html><html lang="id"><meta charset="utf-8"><title>{{ d.number }}</title><style>
+@page{size:A4;margin:14mm}*{box-sizing:border-box}body{font:13px Calibri,Carlito,Arial,sans-serif;color:#111;margin:0}
+.pg{max-width:190mm;margin:0 auto;padding:8px}.hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5px solid #111;padding-bottom:8px;margin-bottom:12px}
+.hd h1{margin:0;font-size:28px}.hd img{height:78px;display:block;margin-left:auto}.r{text-align:right}.meta{display:grid;grid-template-columns:1fr 1fr;gap:6px 0;margin-bottom:8px}
+.box{display:grid;grid-template-columns:1fr 1fr;border:1px solid #111;margin-bottom:14px}.box>div{padding:6px 8px;min-height:80px}.box>div+div{border-left:1px solid #111}
+table{width:100%;border-collapse:collapse}th,td{border:1px solid #111;padding:3px 6px}th{background:#e5e7eb}.c{text-align:center}.n{text-align:right}
+.ttl td{font-weight:700;background:#e5e7eb}h4{margin:14px 0 4px;font-size:13px}.sig{display:flex;gap:80px;margin-top:22px;text-align:center}.sig img{height:80px;display:block;margin:4px auto -14px}
+.ft{margin-top:26px;border-top:1px solid #999;padding-top:6px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#444}.ft img{height:56px;margin-left:6px}
+.bar{position:fixed;top:8px;right:8px}.bar button{padding:8px 14px;font-size:14px;cursor:pointer}@media print{.bar{display:none}}</style>
+<div class="bar"><button onclick="print()">Cetak / Simpan PDF</button></div><div class="pg">
+<div class="hd"><div><h1>{{ label }}</h1>Jasa Pembuatan &amp; Pemasangan Interior/Furnitur</div><div class="r"><img src="{% static 'img/logo.png' %}">Samarinda, Kalimantan Timur<br>HP. 08125395852</div></div>
+<div class="meta"><div>TANGGAL:<br>{{ d.date|tgl }}</div><div>NO. {% if d.type == 'po' %}PO{% elif d.type == 'nota' %}NOTA{% else %}INVOICE{% endif %}:<br>{{ d.number }}</div></div>
+<div class="box">
+<div><b>{% if d.type == 'po' %}Pesanan kepada{% elif d.type == 'nota' %}Dibeli dari{% else %}PEMBERI PEKERJAAN{% endif %}</b><br><i><u>{{ d.party }}</u></i><br><br>{{ d.addr|linebreaksbr }}{% if d.phone %}<br>HP. {{ d.phone }}{% endif %}</div>
+<div><b>{% if d.type == 'po' %}Pemesanan oleh{% elif d.type == 'nota' %}Pembeli{% else %}PELAKSANA PEKERJAAN{% endif %}</b><br><i><u>{{ toko.nama }}</u></i><br><br>{{ toko.alamat|linebreaksbr }}</div></div>
+{% if d.type == 'invoice' %}<h4>RINGKASAN NILAI PEKERJAAN</h4><table><tr><th style="width:40px">NO</th><th>AREA PEKERJAAN</th><th style="width:160px">NILAI</th></tr>
+{% for i in items %}<tr><td class="c">{{ forloop.counter }}</td><td>{{ i.name }}</td><td>Rp <span style="float:right">{{ i.price|rp }}</span></td></tr>{% endfor %}
+<tr class="ttl"><td colspan="2" class="n">TOTAL</td><td>Rp <span style="float:right">{{ d.total|rp }}</span></td></tr></table>
+<p><b>TERBILANG :</b> <i>{{ d.total|terbilang }}</i></p>
+<div style="display:flex;justify-content:space-between"><div style="width:60%"><h4>KETERANGAN</h4>{{ d.notes|linebreaksbr }}</div>
+<div><h4>VIA TRANSFER</h4>{{ toko.bank }}<br>A/C : {{ toko.rek }}<br>A/N : {{ toko.an }}</div></div>
+{% else %}<h4>TABEL BARANG</h4><table><tr><th style="width:40px">NO</th><th>NAMA BARANG</th><th style="width:90px">JUMLAH</th>{% if d.type == 'nota' %}<th style="width:110px">HARGA</th><th style="width:120px">TOTAL</th>{% endif %}</tr>
+{% for i in items %}<tr><td class="c">{{ forloop.counter }}</td><td>{{ i.name }}</td><td class="c">{{ i.qty|floatformat:"-3" }} {{ i.unit }}</td>{% if d.type == 'nota' %}<td class="n">{{ i.price|rp }}</td><td class="n">{{ i.total|rp }}</td>{% endif %}</tr>{% endfor %}
+{% if d.type == 'nota' %}<tr class="ttl"><td colspan="4" class="n">TOTAL</td><td class="n">Rp {{ d.total|rp }}</td></tr>{% endif %}</table>
+{% if d.type == 'nota' %}<p><b>TERBILANG :</b> <i>{{ d.total|terbilang }}</i></p>{% endif %}
+<h4>KETERANGAN</h4>{{ d.notes|linebreaksbr|default:"-" }}{% endif %}
+<div class="sig"><div>Dibuat oleh,<br><b>{{ toko.nama }}</b><img src="{% static 'img/ttd.png' %}"><b><u>( {{ toko.owner }} )</u></b></div>
+{% if d.type == 'invoice' %}<div>Mengetahui / Menyetujui,<br><b>{{ d.party }}</b><div style="height:80px"></div><b><u>(_____________________)</u></b></div>{% endif %}</div>
+<div class="ft"><span>UD SINAR PUTRA | {{ label }}</span><span>Lokasi <img src="{% static 'img/maps.png' %}"> WhatsApp <img src="{% static 'img/wa.png' %}"></span></div></div></html>
